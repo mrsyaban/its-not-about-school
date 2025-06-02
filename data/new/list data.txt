@@ -1,0 +1,42 @@
+1. jumlah perpustakaan terakreditasi
+2. jumlah sekolah, guru, dan murid MI
+3. jumlah pejabat fungsional pustakawan dan asisten perpustakaan
+4. Indeks pembangunan literasi dan masyarakat dan unsur penyusunnya
+5. Jumlah perguruan tinggi, dosen, dan mahasiswa
+6. jumlah desa-kelurahan yang memiliki fasilitas sekolah
+7. jumlah sekolah, guru, dan murid sekolah SMK
+8. jumlah sekolah, guru, dan murid SMA
+9. jumlah sekolah, guru, dan murid SMP
+10. jumlah sekolah, guru, dan murid SD
+11. Illiteracy rate of population aged 10 years
+12. Literacy rate of population aged 15 years
+13. School enrolment rate
+14. Gender parity index (GER) in tertiary population
+15. Literacy rate of population aged 15-59
+16. Literacy rate of population aged 15-24
+17. Literacy rate of population aged 15 years and over
+18. Gender parity Index of Net Enrolment Rate (NER)
+19. Gross enrolment ratio (GER) in Tertiary education
+20. Mean years school of population aged 15 years and over
+21. NER by education level
+22. gross enrolment ratio (GER) by education level
+23. illiteracy rate by age group
+24. Participation rate in organized learning
+25. Jumlah sekolah, guru, dan murid Raudatul Athfal (RA)
+26. Jumlah perguruan tinggi, tenaga pendidik, dan mahasiswa (Negeri dan swasta)
+27. Jumlah sekolah, guru, dan murid Madrasah Aliyah (MA)
+28. Jumlah sekolah, guru, dan murid Madrasah Tsanawiyah (MTs)
+29. Percentage of population aged 10 years
+30. School enrolment rate (SER) by province
+31. Pure participation rate (PER) population of the lowest 40% expenditure group
+32. Number of villages of having educational facilities
+33. Number of schools, teachers, and pupils in junior high schools
+34. number of schools, teachers, and pupils in Madrasah Ibtidaiyah (MI)
+35. number of schools, teachers, and pupilsin senior high schools
+36. number of schools, teachers, and pupils in madrasah aliyah
+37. number of schools, teachers, and pupils in primary schools
+38. number of schools, teachers, and pupils in vocational high schools
+39. number of universities 1, students, and lecturers
+40. number of schools, teachers, and pupils in kindergarten
+41. number of schools, teachers, and pupils in Madrasah tsanawiyah
+42. Number of universities, students, and lecturers (state and private)  
