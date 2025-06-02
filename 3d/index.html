@@ -34,6 +34,7 @@
 
     
     <div id="webgl"></div>
+    <div id="webgl-overlay"></div>
     <script>
       var disableHashChange = false;
 
@@ -174,6 +175,11 @@
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
+        const backgroundTexture = new THREE.TextureLoader().load("img/gradient-bg.jpg");
+        scene.background = backgroundTexture;
+
+        // Atau gunakan warna gradasi
+        renderer.setClearColor(new THREE.Color(0x0c0f2f), 1);
 
         // Shadows
         renderer.shadowMapEnabled = true;

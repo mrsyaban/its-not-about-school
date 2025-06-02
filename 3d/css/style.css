@@ -1,71 +1,137 @@
+/* GLOBAL RESET */
 body {
-  font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	background-color: #fff;
-	margin: 0px;
-	overflow: hidden;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at top left, #0f0c29, #302b63, #24243e);
+  color: #ffffffcc;
 }
 
-body, a, a:visited {
-  color: black;
+/* HEADINGS & TEXT */
+h1, h3, p {
+  color: #ffffffdd;
+  margin: 0 0 12px;
 }
 
-h1 {
-  margin: 0 10px 0 0;
-  padding: 0;
-  display: inline;
+a, a:visited {
+  color: #00ffcc;
+  text-decoration: none;
 }
 
-#url {
-  width: 100%;
-}
-
+/* SIDEBAR MODERN LOOK */
 #sidebar {
   top: 0;
-  height: 100%;
-  position: absolute;
   left: 0;
+  height: 100%;
   width: 400px;
+  position: absolute;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, rgba(0, 72, 105, 0.6), rgba(0, 48, 73, 0.6)),
+              url('../img/komodo.jpg') no-repeat center center;
+  background-size: cover;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
+  color: white;
 }
 
-header {
-  height: 140px;
-  padding: 10px;
-  border-bottom-color: black;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
+/* HEADER */
+header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
 }
 
+/* REGION INFO CARD */
+#region-info {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#region-info h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 6px;
+}
+
+#region-info p {
+  font-size: 14px;
+  margin: 8px 0;
+  color: #f1f1f1;
+}
+
+#region-info strong {
+  color: #aefeff;
+}
+
+
+/* 3D CANVAS AREA */
 #webgl {
   position: absolute;
   left: 400px;
   right: 0;
-  background-color: black;
-  height: 100%;
-}
-
-#sidebar textarea,
-#sidebar .CodeMirror {
-  width: 100%;
-  height: 50%;
-  border-bottom-color: black;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-}
-
-.textareas {
-  position: absolute;
-  width: 100%;
-  top: 170px;
-  bottom: 60px;
-}
-
-.buttons {
-  position: absolute;
-  width: 100%;
+  top: 0;
   bottom: 0;
-  height: 60px;
+  background: linear-gradient(135deg, #0d1117, #0c0f2f);
+  background-blend-mode: overlay;
 }
 
-#submit {
-  margin: 10px;
+/* INPUT FIELD (if used) */
+#url {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 14px;
 }
+
+#url::placeholder {
+  color: #cccccc;
+}
+
+/* SUBMIT BUTTON (if used) */
+#submit {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #1ed760, #1db954);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+#submit:hover {
+  background: linear-gradient(135deg, #1db954, #1ed760);
+  transform: scale(1.05);
+}
+
+
+#webgl-overlay {
+  position: absolute;
+  top: 0;
+  left: 400px;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 20, 30, 0.15); /* bisa atur lebih gelap jika ingin kesan kontras */
+  /* backdrop-filter: blur(4px); */  /* HAPUS BARIS INI */
+  /* -webkit-backdrop-filter: blur(4px); */ /* HAPUS JUGA */
+  pointer-events: none;
+  z-index: 1;
+}
+
