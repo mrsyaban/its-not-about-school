@@ -10,11 +10,9 @@ df_long = df.melt(id_vars=["Indicator"], var_name="Year", value_name="Value")
 df_long["Year"] = pd.to_numeric(df_long["Year"], errors="coerce")
 df_long["Value"] = pd.to_numeric(df_long["Value"], errors="coerce")
 
-# PISA scores data
 df_pisa = pd.read_csv("data/pisa-score.csv")
 melted = df_pisa.melt(id_vars=["Year"], var_name="Subject", value_name="Score")
 
-# Custom data for Pupil-Teacher ratio
 data = {
     "country": [
         "Brunei Darussalam", "Singapore", "Malaysia", "Vietnam", "Indonesia",
@@ -29,7 +27,7 @@ data = {
 df_ratio = pd.DataFrame(data)
 
 # Streamlit Layout
-st.set_page_config(page_title="Indonesia Education Progress", layout="wide")
+st.set_page_config(page_title="Indonesia Education Progress", layout="centered")
 
 st.markdown("""
     <style>
@@ -59,7 +57,7 @@ st.markdown("""
     """)
 
 # Access to Education - NER Trends with indicator selection
-st.subheader("Access to Education - Net Enrollment Rate (NER) Trends")
+st.subheader("Education Indicator Trends Over Decades")
 
 # Year range filter
 year_range = st.slider(
@@ -112,10 +110,10 @@ line_chart = alt.Chart(filtered_data).mark_line(
     point=alt.OverlayMarkDef(
         filled=False,
         size=100,
-        shape='circle'  # You can change to 'square', 'diamond', etc.
+        shape='circle'
     ),
-    strokeWidth=3,  # Thicker line
-    interpolate='monotone'  # Smooth curve instead of jagged lines
+    strokeWidth=3,
+    interpolate='monotone'
 ).encode(
     x=alt.X("Year:O", title="Year"),
     y=alt.Y("Value:Q", title="NER", scale=alt.Scale(zero=False)),
@@ -144,19 +142,17 @@ fig = px.choropleth(df_ratio, locations="iso_alpha", locationmode="ISO-3", color
                     hover_name="country", color_continuous_scale="Blues", labels={"pupil_teacher_ratio_primary": "Pupils per Teacher"},
                     title="Pupil-Teacher Ratio in Primary Education (Lower is Better)")
 
-# Update map's geographical background to black
 fig.update_geos(
     visible=False, 
     resolution=50, 
     showcountries=True, 
     fitbounds="locations",
-    bgcolor='black'  # Set geo background to black
+    bgcolor='black'
 )
 
-# Update the whole plot's background to black
 fig.update_layout(
     margin={"r": 0, "t": 50, "l": 0, "b": 0},
-    plot_bgcolor='#0e1117'  # Set plot background to black
+    plot_bgcolor='#0e1117'
 )
 
 st.plotly_chart(fig, use_container_width=False)
@@ -175,11 +171,9 @@ line_chart_pisa = alt.Chart(melted).mark_line().encode(
 ).properties(width=700, height=500)
 st.altair_chart(line_chart_pisa, use_container_width=True)
 
-# Optional data table for PISA Scores
 with st.expander("🔍 Show raw data for PISA Scores"):
     st.dataframe(df_pisa)
 
-# Conclusion
 st.markdown("""
     Indonesia has made commendable progress in expanding access to education, but the quality of learning remains a critical concern.
     With declining PISA scores and a high student-teacher ratio, the next challenge lies in ensuring that students not only attend school but truly learn.
