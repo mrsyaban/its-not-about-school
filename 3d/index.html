@@ -1,0 +1,429 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+      3D GeoJSON - Maptime AMS #6
+    </title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/codemirror.css">
+    <script src="js/lib/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/lib/topojson.v1.min.js"></script>
+    <script src="js/lib/three.min.js"></script>
+    <script src="js/lib/TrackballControls.js"></script>
+    <script src="js/lib/Detector.js"></script>
+    <script src="js/lib/turf.min.js"></script>
+    <script src="js/codemirror.js"></script>
+    <script src="js/javascript.js"></script>
+    <script src="js/geo.js"></script>
+  </head>
+  <body>
+    <div id="sidebar">
+      <header>
+        <h1>It's not about school</h1>
+      </header>
+
+      <div id="region-info" style="padding: 10px;">
+        <h3>Region Info</h3>
+        <p>Click on a region to view its info here.</p>
+      </div>
+    </div>
+
+    
+    <div id="webgl"></div>
+    <div id="webgl-overlay"></div>
+    <script>
+      var disableHashChange = false;
+
+      var cmColor;
+      var cmHeight;
+
+      // Store downloaded JSON in variable
+      var json;
+
+      var defaults = {
+        url: 'data/indonesia.geojson',
+        color:
+          'function(d) {\n' +
+          '  return Math.random() * 16777216;\n' +
+          '}',
+        height:
+          'function(d) {\n' +
+          '  return Math.random()\n' +
+          '}'
+      };
+
+      var latest = {
+        url: null,
+        color: null,
+        height: null
+      };
+
+      var materials = {
+        phong: function(color) {
+          return new THREE.MeshPhongMaterial({
+            color: color, side: THREE.DoubleSide
+            //	phong : new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x000000, shininess: 60, shading: THREE.SmoothShading, transparent:true  }),
+          });
+        },
+        meshLambert: function(color) {
+          return new THREE.MeshLambertMaterial({
+            color: color,
+            specular: 0x009900,
+            shininess: 30,
+            shading: THREE.SmoothShading,
+            transparent:true
+          });
+        },
+        meshWireFrame: function(color) {
+          return new THREE.MeshBasicMaterial({
+             color: color,
+            specular: 0x009900,
+            shininess: 30,
+            shading: THREE.SmoothShading,
+            wireframe:true,
+            transparent:true
+          });
+        },
+        meshBasic: function(color) {
+          return new THREE.MeshBasicMaterial({
+            color: color,
+            specular: 0x009900,
+            shininess: 30,
+            shading: THREE.SmoothShading,
+            transparent: true
+          });
+        }
+      };
+
+      if (!Detector.webgl) {
+        Detector.addGetWebGLMessage();
+      }
+
+      var container;
+      var camera, controls, scene, renderer;
+      var light, spotLight, ambientLight;
+      var cross;
+
+      function onWindowResize() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        controls.handleResize();
+        render();
+      }
+
+      function updateRegionInfo(feature) {
+        const name = feature.properties.name || "Unnamed Region";
+        const population = Math.floor(Math.random() * 1_000_000);
+        const area = (Math.random() * 1000).toFixed(2);
+        const div = document.getElementById("region-info");
+        div.innerHTML = `
+          <h3>Region Info</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Population:</strong> ${population.toLocaleString()}</p>
+          <p><strong>Area:</strong> ${area} km²</p>
+        `;
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+      }
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      function init() {
+        container = document.getElementById('webgl');
+
+        camera = new THREE.PerspectiveCamera( 70, container.clientWidth / container.clientHeight, 0.1, 10000);
+        camera.position.z = Math.min(container.clientWidth, container.clientHeight) * 0.1;
+        controls = new THREE.TrackballControls(camera, container);
+        controls.rotateSpeed = 1.0;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+        controls.noZoom = false;
+        controls.noPan = false;
+        controls.staticMoving = true;
+        controls.dynamicDampingFactor = 0.3;
+        controls.keys = [65, 83, 68];
+        controls.addEventListener('change', render);
+
+        // World
+        scene = new THREE.Scene();
+
+        // Lights
+        light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(1, 1, 1);
+        scene.add(light);
+
+        spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-1000, -1000, 1000);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        ambientLight = new THREE.AmbientLight(0x333333);
+        scene.add(ambientLight);
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+        const backgroundTexture = new THREE.TextureLoader().load("img/gradient-bg.jpg");
+        scene.background = backgroundTexture;
+
+        // Atau gunakan warna gradasi
+        renderer.setClearColor(new THREE.Color(0x0c0f2f), 1);
+
+        // Shadows
+        renderer.shadowMapEnabled = true;
+        renderer.shadowMapSoft = true;
+        renderer.shadowCameraNear = 1;
+        renderer.shadowCameraFar = camera.far;
+        renderer.shadowCameraFov = 60;
+        renderer.shadowMapBias = 0.0025;
+        renderer.shadowMapDarkness = 0.5;
+        renderer.shadowMapWidth = 1024;
+        renderer.shadowMapHeight = 1024;
+
+        window.addEventListener('resize', onWindowResize, false);
+        onWindowResize();
+        render();
+
+        // === RAYCASTER logic START ===
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        renderer.domElement.addEventListener('click', (event) => {
+          const rect = renderer.domElement.getBoundingClientRect();
+          mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+          const intersects = raycaster.intersectObjects(scene.children, true);
+          for (let i = 0; i < intersects.length; i++) {
+            const obj = intersects[i].object;
+            if (obj.userData.feature) {
+              updateRegionInfo(obj.userData.feature);
+              break;
+            }
+          }
+        }, false);
+        // === RAYCASTER logic END ===
+
+        update();
+      }
+
+      function clearGroups() {
+        if (json) {
+          if (json.type === 'FeatureCollection') {
+            json.features.forEach(function(feature) {
+              scene.remove(feature._group);
+            });
+          } else if (json.type === 'Topology') {
+            Object.keys(json.objects).forEach(function(key) {
+              json.objects[key].geometries.forEach(function(object) {
+                scene.remove(object._group);
+              });
+            });
+          }
+        }
+        render();
+      }
+
+      function update() {
+        clearGroups();
+
+        var width = container.clientWidth;
+        var height = container.clientHeight;
+
+        var url = defaults.url
+
+        d3.json(url, function(data) {
+
+          json = data;
+
+          var functions = {};
+
+          functions.color = eval('(' + defaults.color + ')');
+          functions.height = eval('(' + defaults.height + ')');
+
+
+          if (json.type === 'FeatureCollection') {
+
+            var projection = getProjection(json, width, height);
+
+            json.features.forEach(function(feature) {
+              var group = addFeature(feature, projection, functions);
+              feature._group = group;
+            });
+
+          } else if (json.type === 'Topology') {
+
+            var geojson = topojson.merge(json, json.objects[Object.keys(json.objects)[0]].geometries);
+            var projection = getProjection(geojson, width, height);
+
+            Object.keys(json.objects).forEach(function(key) {
+              json.objects[key].geometries.forEach(function(object) {
+                var feature = topojson.feature(json, object);
+                var group = addFeature(feature, projection, functions);
+                object._group = group;
+              });
+            });
+
+          } else {
+            console.log('This tutorial only renders TopoJSON and GeoJSON FeatureCollections')
+          }
+
+          render();
+        });
+      }
+
+      function addShape(group, shape, extrudeSettings, material, color, x, y, z, rx, ry, rz, s) {
+        var geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+        var mesh = new THREE.Mesh(geometry, materials[material](color));
+
+        // Add shadows
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+
+        mesh.position.set(x, y, z);
+        mesh.rotation.set(rx, ry, rz);
+        mesh.scale.set(s, s, s);
+        group.add(mesh);
+      }
+
+      function addFeature(feature, projection, functions) {
+        var group = new THREE.Group();
+        scene.add(group);
+
+        var color;
+        var amount;
+
+        try {
+          color = functions.color(feature.properties);
+        } catch(err) {
+          console.log(err);
+        }
+
+        try {
+          amount = functions.height(feature.properties);
+        } catch(err) {
+          console.log(err);
+        }
+
+        var extrudeSettings = {
+          amount: amount,
+          bevelEnabled: false
+        };
+
+        var material = 'phong';
+
+        if (feature.geometry.type === 'Polygon') {
+          var shape = createPolygonShape(feature.geometry.coordinates, projection);
+          addShape(group, shape, extrudeSettings, material, color, 0, 0, amount, Math.PI, 0, 0, 1);
+        } else if (feature.geometry.type === 'MultiPolygon') {
+          feature.geometry.coordinates.forEach(function(polygon) {
+            var shape = createPolygonShape(polygon, projection);
+            addShape(group, shape, extrudeSettings, material, color, 0, 0, amount, Math.PI, 0, 0, 1);
+          });
+        } else {
+          console.log('This tutorial only renders Polygons and MultiPolygons')
+        }
+
+        group.userData.feature = feature;
+        group.traverse(child => {
+          if (child instanceof THREE.Mesh) {
+            child.userData.feature = feature;
+          }
+        });
+
+        return group;
+      }
+
+      // Set textareas to contain default functions
+      if (document.getElementById('color'))
+        document.getElementById('color').value = defaults.color;
+      if (document.getElementById('height'))
+        document.getElementById('height').value = defaults.height;
+
+      // Initialize CodeMirror:
+
+      d3.selectAll("#submit").on('click', function() {
+        latest = {
+          url: defaults.url,
+          color: defaults.color,
+          height: defaults.height
+        };
+        update();
+        updateHash();
+      });
+
+      function parseHash(hash) {
+        params = {};
+        hash.split("&").forEach(function(param) {
+          if (param.indexOf("=") > -1) {
+            var kv = param.split("=");
+            params[kv[0]] = decodeURIComponent(kv[1]);
+          }
+        });
+
+        if (params.url) {
+          latest.url = params.url;
+        }
+
+        if (params.color) {
+          latest.color = params.color;
+        }
+
+        if (params.height) {
+          latest.height = params.height;
+        }
+      }
+
+      function updateHash() {
+        disableHashChange = true;
+
+        var params = {};
+        if (latest.url) {
+          params.url = encodeURIComponent(latest.url);
+        }
+        if (latest.color) {
+          params.color = encodeURIComponent(latest.color);
+        }
+        if (latest.height) {
+          params.height = encodeURIComponent(latest.height);
+        }
+
+        var items = [];
+        for (param in params) {
+          items.push(param + '=' + params[param]);
+        }
+
+        location.hash = items.join('&');
+        setTimeout(function(){
+          disableHashChange = false;
+        }, 1000);
+      }
+
+      window.onhashchange = function() {
+        if (!disableHashChange) {
+          parseHash(location.hash.substring(1))
+        }
+      };
+
+      if (location.hash) {
+        parseHash(location.hash.substring(1));
+      }
+
+      // Initalize WebGL!
+      init();
+      animate();
+    </script>
+  </body>
+</html>

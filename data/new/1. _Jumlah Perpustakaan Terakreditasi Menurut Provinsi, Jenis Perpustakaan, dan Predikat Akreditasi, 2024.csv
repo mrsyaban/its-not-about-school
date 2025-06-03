@@ -1,0 +1,40 @@
+﻿Provinsi,Jumlah Perpustakaan Khusus Terakreditasi-A,Jumlah Perpustakaan Khusus Terakreditasi-B,Jumlah Perpustakaan Khusus Terakreditasi-C,Jumlah Perpustakaan Khusus Terakreditasi-total,Jumlah Perpustakaan Sekolah Terakreditasi-A,Jumlah Perpustakaan Sekolah Terakreditasi-B,Jumlah Perpustakaan Sekolah Terakreditasi-C,Jumlah Perpustakaan Sekolah Terakreditasi-total,Jumlah Perpustakaan Perguruan Tinggi Terakreditasi-A,Jumlah Perpustakaan Perguruan Tinggi Terakreditasi-B,Jumlah Perpustakaan Perguruan Tinggi Terakreditasi-C,Jumlah Perpustakaan Perguruan Tinggi Terakreditasi-total,Jumlah Perpustakaan Umum Terakreditasi-A,Jumlah Perpustakaan Umum Terakreditasi-B,Jumlah Perpustakaan Umum Terakreditasi-C,Jumlah Perpustakaan Umum Terakreditasi-total,Jumlah Perpustakaan-Total
+Aceh,1,1,4,6,,16,130,146,5,5,7,17,1,6,35,42,211
+Sumatera Utara,4,2,2,8,10,43,76,129,11,4,4,19,3,11,28,42,198
+Sumatera Barat,1,2,2,5,31,74,200,305,5,4,5,14,1,19,33,53,377
+Riau,1,1,1,3,106,49,33,188,4,9,4,17,4,12,11,27,235
+Jambi,2,,,2,1,7,62,70,1,4,15,20,1,11,34,46,138
+Sumatera Selatan,1,1,5,7,12,79,244,335,10,9,11,30,2,10,13,25,397
+Bengkulu,1,,1,2,5,10,9,24,7,,,7,2,4,17,23,56
+Lampung,1,2,4,7,12,25,58,95,9,3,6,18,,7,16,23,143
+Kepulauan Bangka Belitung,1,,5,6,18,123,288,429,3,1,2,6,3,37,89,129,570
+Kepulauan Riau,2,2,,4,,5,19,24,2,1,1,4,2,6,26,34,66
+DKI Jakarta,22,17,7,46,36,15,447,498,26,13,4,43,6,14,39,59,646
+Jawa Barat,11,7,7,25,53,69,763,885,34,26,19,79,10,23,21,54,1043
+Jawa Tengah,9,4,5,18,405,424,735,1564,34,16,13,63,34,218,478,730,2375
+DI Yogyakarta,5,6,2,13,390,102,391,883,20,13,17,50,16,35,74,125,1071
+Jawa Timur,7,3,9,19,460,290,1759,2509,40,18,28,86,21,248,246,515,3129
+Banten,2,3,,5,11,41,145,197,10,3,1,14,2,5,5,12,228
+Bali,1,,4,5,28,71,492,591,3,4,3,10,2,12,14,28,634
+Nusa Tenggara Barat,,1,,1,4,21,109,134,3,1,7,11,,6,17,23,169
+Nusa Tenggara Timur,1,1,2,4,,2,14,16,1,1,6,8,,2,21,23,51
+Kalimantan Barat,1,,5,6,14,32,123,169,2,1,3,6,1,66,77,144,325
+Kalimantan Tengah,1,,,1,5,12,76,93,1,5,3,9,,17,46,63,166
+Kalimantan Selatan,1,2,3,6,10,23,168,201,4,1,12,17,5,5,34,44,268
+Kalimantan Timur,4,2,1,7,74,108,78,260,4,3,3,10,10,12,15,37,314
+Kalimantan Utara,1,1,,2,1,,21,22,,1,,1,,1,6,7,32
+Sulawesi Utara,1,,,1,2,2,9,13,1,,,1,1,4,17,22,37
+Sulawesi Tengah,,,3,3,4,13,27,44,2,3,2,7,,5,36,41,95
+Sulawesi Selatan,3,1,2,6,46,64,124,234,8,7,15,30,1,163,157,321,591
+Sulawesi Tenggara,1,,3,4,6,31,41,78,2,4,3,9,3,2,16,21,112
+Gorontalo,1,1,,2,18,27,51,96,6,2,2,10,3,5,58,66,174
+Sulawesi Barat,,,,,1,49,183,233,,1,2,3,2,4,14,20,256
+Maluku,,,,,1,1,6,8,,1,2,3,1,2,18,21,32
+Maluku Utara,1,,,1,,7,21,28,1,2,,3,,5,15,20,52
+Papua Barat,,,,,3,4,9,16,1,1,1,3,,3,8,11,30
+Papua Barat Daya,,,,,,1,2,3,2,,,2,,1,3,4,9
+Papua,1,,1,2,,2,4,6,1,1,1,3,,,4,4,15
+Papua Selatan,,,,,,,,,,1,,1,,,,,1
+Papua Tengah,,,,,,,,,,,,,,,,,
+Papua Pegunungan,,,,,,,,,,,,,,,,,
+Indonesia,89,60,78,227,1767,1842,6917,10526,263,169,202,634,137,981,1741,2859,14246
