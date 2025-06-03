@@ -75,18 +75,34 @@ filtered_data = df_long[
     (df_long["Year"] >= year_range[0]) & (df_long["Year"] <= year_range[1])
 ]
 
+# # Select which indicators to display
+# selected_indicators = st.multiselect(
+#     "Select Indicators to Display:",
+#     options=df_long["Indicator"].unique(),
+#     default=["NER Primary Education", "NER Lower Secondary Education", "NER Upper Secondary Education"]
+# )
+
+# color_mapping = {
+#     "NER Primary Education": "#92242a",
+#     "NER Lower Secondary Education": "#4777af",
+#     "NER Upper Secondary Education": "#7d8c9c"
+# }
+
+# # Filter the data based on selected indicators
+# filtered_data = filtered_data[filtered_data["Indicator"].isin(selected_indicators)]
+
 # Select which indicators to display
 selected_indicators = st.multiselect(
     "Select Indicators to Display:",
     options=df_long["Indicator"].unique(),
-    default=["NER Primary Education", "NER Lower Secondaary Education", "NER Upper Secondary Education"]
+    default=["NER Primary Education", "NER Lower Secondary Education", "NER Upper Secondary Education"]
 )
 
-color_mapping = {
-    "NER Primary Education": "#92242a",
-    "NER Lower Secondaary Education": "#4777af",
-    "NER Upper Secondary Education": "#7d8c9c"
-}
+# Dynamic color mapping that works with any selected indicators
+# Define a list of colors to use
+colors = ["#92242a", "#4777af", "#7d8c9c", "#e69d00", "#0072b2", "#009e73", "#cc79a7", "#56b4e9", "#d55e00", "#f0e442"]
+# Create color mapping for selected indicators
+color_mapping = {indicator: colors[i % len(colors)] for i, indicator in enumerate(selected_indicators)}
 
 # Filter the data based on selected indicators
 filtered_data = filtered_data[filtered_data["Indicator"].isin(selected_indicators)]
@@ -153,7 +169,7 @@ st.markdown("""
 """)
 line_chart_pisa = alt.Chart(melted).mark_line().encode(
     x=alt.X("Year:O", title="Year"),
-    y=alt.Y("Score:Q", title="PISA Score", scale=alt.Scale(domain=[350, 450])),
+    y=alt.Y("Score:Q", title="PISA Score", scale=alt.Scale(domain=[350, 410])),
     color="Subject:N",
     tooltip=["Year", "Subject", "Score"]
 ).properties(width=700, height=500)
