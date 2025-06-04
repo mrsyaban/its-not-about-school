@@ -10,6 +10,9 @@ df_long = df.melt(id_vars=["Indicator"], var_name="Year", value_name="Value")
 df_long["Year"] = pd.to_numeric(df_long["Year"], errors="coerce")
 df_long["Value"] = pd.to_numeric(df_long["Value"], errors="coerce")
 
+# Handle duplicate indicator-year pairs by keeping only the first occurrence
+df_long = df_long.drop_duplicates(subset=["Indicator", "Year"], keep="first")
+
 df_pisa = pd.read_csv("data/pisa-score.csv")
 melted = df_pisa.melt(id_vars=["Year"], var_name="Subject", value_name="Score")
 
@@ -123,7 +126,25 @@ line_chart = alt.Chart(filtered_data).mark_line(
         scale=alt.Scale(domain=list(color_mapping.keys()), range=list(color_mapping.values()))
     ),
     tooltip=["Year", "Indicator", "Value"]
-).properties(width=900, height=700).interactive()
+).properties(
+    width=900, 
+    height=700
+).configure_legend(
+    orient='top',
+    titleFontSize=14,
+    labelFontSize=12,
+    symbolSize=150,
+    padding=0,
+    offset=0,
+    columnPadding=20,
+    labelLimit=300,
+    direction='horizontal',
+    columns=len(selected_indicators) if len(selected_indicators) <= 5 else 2
+).configure_view(
+    strokeWidth=0
+).configure_concat(
+    spacing=0
+).interactive()
 
 st.altair_chart(line_chart, use_container_width=True)
 
