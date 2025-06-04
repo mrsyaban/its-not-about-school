@@ -108,6 +108,22 @@ color_mapping = {indicator: colors[i % len(colors)] for i, indicator in enumerat
 # Filter the data based on selected indicators
 filtered_data = filtered_data[filtered_data["Indicator"].isin(selected_indicators)]
 
+# Create CSS to remove padding from the legend container
+st.markdown("""
+    <style>
+        /* Remove padding from chart container */
+        .st-emotion-cache-1r6slb0 {
+            padding-left: 0 !important;
+        }
+        
+        /* Target the SVG container of the chart */
+        .st-emotion-cache-1r6slb0 > div > div {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Line chart for NER
 line_chart = alt.Chart(filtered_data).mark_line(
     point=alt.OverlayMarkDef(
@@ -139,13 +155,12 @@ line_chart = alt.Chart(filtered_data).mark_line(
     columnPadding=20,
     labelLimit=300,
     direction='horizontal',
-    columns=len(selected_indicators) if len(selected_indicators) <= 5 else 2
+    columns=len(selected_indicators) if len(selected_indicators) <= 5 else 3
 ).configure_view(
     strokeWidth=0
-).configure_concat(
-    spacing=0
 ).interactive()
 
+# Use container with zero padding for the chart
 st.altair_chart(line_chart, use_container_width=True)
 
 # Middle Section - Pupil Teacher Ratio
