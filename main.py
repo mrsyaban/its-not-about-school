@@ -30,7 +30,7 @@ data = {
 df_ratio = pd.DataFrame(data)
 
 # Streamlit Layout
-st.set_page_config(page_title="Indonesia Education Progress", layout="centered")
+st.set_page_config(page_title="Indonesia Education Progress", layout="wide")
 
 st.markdown("""
     <style>
@@ -212,5 +212,5 @@ with st.expander("🔍 Show raw data for PISA Scores"):
 
 st.markdown("""
     Indonesia has made commendable progress in expanding access to education, but the quality of learning remains a critical concern.
-    With declining PISA scores and a high student-teacher ratio, the next challenge lies in ensuring that students not only attend school but truly learn..
+    With declining PISA scores and a high student-teacher ratio, the next challenge lies in ensuring that students not only attend school but truly learn.
 """)
