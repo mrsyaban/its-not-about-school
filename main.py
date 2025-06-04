@@ -212,5 +212,5 @@ with st.expander("🔍 Show raw data for PISA Scores"):
 
 st.markdown("""
     Indonesia has made commendable progress in expanding access to education, but the quality of learning remains a critical concern.
-    With declining PISA scores and a high student-teacher ratio, the next challenge lies in ensuring that students not only attend school but truly learn.
+    With declining PISA scores and a high student-teacher ratio, the next challenge lies in ensuring that students not only attend school but truly learn..
 """)
